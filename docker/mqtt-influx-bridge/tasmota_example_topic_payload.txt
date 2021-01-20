@@ -1,0 +1,2 @@
+tasmota/pow_r2_01/STATE {"Time":"2021-01-16T12:17:56","Uptime":"0T00:02:09","UptimeSec":129,"Heap":25,"SleepMode":"Dynamic","Sleep":50,"LoadAvg":19,"MqttCount":1,"POWER":"ON","Wifi":{"AP":1,"SSId":"...","BSSId":"...","Channel":1,"RSSI":90,"Signal":-55,"LinkCount":1,"Downtime":"0T00:00:03"}}
+tasmota/pow_r2_01/SENSOR {"Time":"2021-01-16T12:17:56","ENERGY":{"TotalStartTime":"2021-01-15T17:33:19","Total":0.000,"Yesterday":0.000,"Today":0.000,"Period":0,"Power":0,"ApparentPower":0,"ReactivePower":0,"Factor":0.00,"Voltage":231,"Current":0.000}}

@@ -1,0 +1,55 @@
+# documentation: https://docs.docker.com/compose/
+version: '3'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: always
+    ports:
+      - 1883:1883
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto/users:/mosquitto/config/users
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./influxdb:/var/lib/influxdb
+    env_file:
+      - ./environment-variables/influxdb.env
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    depends_on:
+      - influxdb
+    ports:
+      - 3000:3000
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./grafana:/var/lib/grafana
+
+  mqttbridge:
+    build: ./mqtt-influx-bridge
+    container_name: mqttbridge
+    restart: always
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./mqtt-influx-bridge/mqtt-influx-bridge.py:/mqtt-influx-bridge.py
+    depends_on:
+      - mosquitto
+      - influxdb
+    command: 'python3 /mqtt-influx-bridge.py'
+    env_file:
+      - ./environment-variables/influxdb.env
+      - ./environment-variables/mosquitto.env
